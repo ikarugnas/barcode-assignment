@@ -18,6 +18,7 @@ namespace Barcode_Assignment
         {
             //Dynamic interpretation was attempted but failed. File wouldn't recognize on my PC despite being in the right directory.
             //excel.Workbooks.Open(filepath) would not accept dynamic filepath format.
+            //basePath is in the \bin\ folder. All you have to do for the code to run is to change the base path to the \bin\ folder on the device.
             string basePath = @"C:\Users\Enes\source\repos\Barcode Assignment\Barcode Assignment\bin\";
             string inputPath = basePath + "input.xlsx";
             string outputPath = basePath + "output.xlsx";
@@ -67,6 +68,11 @@ namespace Barcode_Assignment
             string[] files = System.IO.Directory.GetFiles(MAP1Path);
             int copiedFiles = 0;
 
+            if (!Directory.Exists(MAP2Path))
+            {
+                Directory.CreateDirectory(MAP2Path);
+            }
+
             foreach (StoreItem item in items)
             {
                 item.FileNames = new List<string>();
@@ -78,6 +84,8 @@ namespace Barcode_Assignment
                         string destinationFile = MAP2Path + fileName;
                         try
                         {
+                            
+
                             System.IO.File.Copy(file, destinationFile);
                             item.FileNames.Add(fileName);
                             Logger.WriteLog($"{fileName} was successfully added as a file to {destinationFile}");
@@ -85,6 +93,7 @@ namespace Barcode_Assignment
                         }
                         catch (System.IO.IOException e)
                         {
+                            
                             Logger.WriteLog(e.Message);
                             item.FileNames.Add(fileName);
                         }
